@@ -1,9 +1,16 @@
-import { codeToHtml } from "shiki";
-import python from "shiki/langs/python.mjs";
+// lib/highlighter.ts
+export async function highlight(code: string, langName = "python") {
+  // dynamische import voorkomt ESM/build problemen
+  const { codeToHtml } = await import("shiki");
+  // laad de taalmodule expliciet (werkt met shiki 1.x)
+  const langModule = await import(`shiki/langs/${langName}.mjs`);
+  const lang = langModule.default ?? langModule;
 
-export async function highlight(code: string) {
-  return await codeToHtml(code, {
-    lang: python,
-    theme: "vitesse-dark",
+  // kies een bekende theme-naam of laat hier je eigen theme.json importeren
+  const theme = "vitesse-dark";
+
+  return codeToHtml(code, {
+    lang,
+    theme,
   });
 }
