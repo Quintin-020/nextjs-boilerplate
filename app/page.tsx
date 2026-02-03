@@ -151,7 +151,7 @@ def main():
 if __name__ == "__main__":
     main()
 ` },
-    { title: "Delivery Tracker", code: ` """
+    { title: "Delivery Tracker", code: `"""
 Delivery Tracker
 
 What this script does:
