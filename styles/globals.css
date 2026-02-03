@@ -25,3 +25,11 @@ pre.shiki {
   border-radius: 12px;
   padding: 20px 80px 20px 20px; /* match jouw layout */
 }
+
+pre.shiki,
+pre.shiki code,
+pre.shiki span {
+  background-color: #000000 !important;
+}
+
+
