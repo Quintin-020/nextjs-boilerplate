@@ -6,7 +6,7 @@ import CodeBlock from "./components/CodeBlock";
 export default async function Home() {
   const blocks = [
     { title: "Script 1", code: `print("hello script1")` },
-    { title: "Script 2", code: `print("import os
+    { title: "Script 2", code: `import os
 
 # reads data from a file and stores it in an array
 def read_delivery_file(filename):
@@ -30,7 +30,7 @@ def find_missing_deliveries():
     # writes the missing deliveries to csv
     with open(missing_deliveries_file, 'w') as f:
         for code in missing_deliveries:
-            f.write(str(code) + ',\n')
+            f.write(str(code) + ',\\n')
         print("File:", missing_deliveries_file, " created")
 
 def process_all_deliveries():
