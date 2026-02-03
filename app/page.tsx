@@ -6,7 +6,7 @@ import CodeBlock from "./components/CodeBlock";
 export default async function Home() {
   const blocks = [
     { title: "Script 1", code: `print("hello script1")` },
-    { title: "Script 2", code: `import os
+    { title: "Delivery Tracker", code: `import os
 
 # reads data from a file and stores it in an array
 def read_delivery_file(filename):
@@ -108,8 +108,358 @@ find_missing_deliveries()
 input("press any key to close the application")
 exit()
 ")` },
-    { title: "Script 3", code: `print("hello script3")` },
-    { title: "Script 4", code: `print("hello script4")` },
+    { title: "Inventory Discrepancy Tracker", code: `import os
+from decimal import Decimal
+from datetime import datetime
+import datetime
+
+# Input files must have a semicolon as field separator!
+
+# CSV file: products.csv
+# Columns: id;product_name;warehouse_location
+
+# CSV file: inventory.csv
+# Columns: id;expected_quantity;received_quantity;unit_cost
+
+# Output file: output.csv
+# Columns: id;product_name;warehouse_location;discrepancy
+
+#########################################################
+
+# Program introduction
+print("Inventory Discrepancy Tracker")
+
+now = datetime.datetime.now()
+print("Current date and time:", now)
+
+print("Welcome to the Inventory Discrepancy Tracker!")
+
+# Set the file names
+# Absolute paths to the CSV files
+script_dir = os.path.dirname(os.path.abspath(__file__))
+products_file = os.path.join(script_dir, "products.csv")
+inventory_file = os.path.join(script_dir, "inventory.csv")
+output_file = os.path.join(script_dir, "output.csv")
+
+confirmation = ["y", "yes", "j", "ja"]
+
+
+# Read a CSV file
+# Returns a list of records parsed from the CSV file
+def read_csv(filename):
+  try:
+    file = open(filename, 'r')
+    lines = file.readlines()
+    file.close()
+    
+    # Process all lines, skip the first one (header)
+    data = []
+    counter = 0
+    for line in lines:
+      if counter > 0:  # Skip the first line
+        data.append(line.strip().split(";"))
+      counter += 1
+    
+    print(f"✓ '{filename}' read: {len(data)} records")
+    return data
+    
+  except FileNotFoundError:
+    print(f"✗ ERROR: '{filename}' not found!")
+    close_program()
+  except Exception as error:
+    print(f"✗ ERROR reading '{filename}': {error}")
+    close_program()
+
+# Find a column index based on its name from the CSV file header
+def find_column(filename, column_name):
+  file = open(filename, 'r')
+  header = file.readline().strip().split(";")
+  file.close()
+  
+  if column_name in header:
+    return header.index(column_name)
+  return -1
+
+# Properly close the program with a user prompt
+def close_program():
+  print("Thank you for using this program!")
+  print("Press Enter to exit...")
+  exit()
+
+
+# Read the products data from file
+data_products = read_csv(products_file)
+
+# Read the inventory data from file
+data_inventory = read_csv(inventory_file)
+
+# Determine which columns we need
+column_id_inventory = find_column(inventory_file, "id")
+column_expected_quantity = find_column(inventory_file, "expected_quantity")
+column_received_quantity = find_column(inventory_file, "received_quantity")
+column_unit_cost = find_column(inventory_file, "unit_cost")
+
+column_id_product = find_column(products_file, "id")
+column_product_name = find_column(products_file, "product_name")
+column_warehouse_location = find_column(products_file, "warehouse_location")
+
+
+# Calculate inventory discrepancies between expected and received quantities
+count_overages = 0
+count_shortages = 0
+
+# Create a list with all products and their discrepancies
+results = []
+
+# Process each product's inventory data
+for inventory in data_inventory:
+  product_id = inventory[column_id_inventory]
+  expected_quantity = Decimal(inventory[column_expected_quantity].replace(',', '.'))
+  received_quantity = Decimal(inventory[column_received_quantity].replace(',', '.'))
+  unit_cost = Decimal(inventory[column_unit_cost].replace(',', '.')) 
+  expected_value = expected_quantity * unit_cost
+  
+  # Calculate the difference between expected and received values
+  received_value = received_quantity * unit_cost
+  discrepancy = received_value - expected_value
+
+  # Find the corresponding product name and warehouse location, then add to results
+  for product in data_products:
+    if product[column_id_product] == product_id:
+      results.append({
+        "id": product_id,
+        "name": product[column_product_name],
+        "location": product[column_warehouse_location],
+        "discrepancy": discrepancy
+      })
+      break
+
+  # Check if the discrepancy is negative (shortage) or positive (overage)
+  discrepancy = discrepancy.quantize(Decimal('0.01'))  # Round to 2 decimal places
+  if discrepancy < 0:  # Shortage
+    count_shortages += 1
+  elif discrepancy > 0:  # Overage
+    count_overages += 1
+
+# Display summary statistics
+print(f"Number of products with overage: {count_overages}")
+print(f"Number of products with shortage: {count_shortages}")
+print()
+
+print(f"Total number of products tracked: {len(results)}")
+print()
+
+# Check if output file already exists
+if os.path.isfile(output_file):
+  answer = input(f"'{output_file}' already exists. Overwrite? (y/n): ")
+  if answer.lower() not in confirmation:
+    close_program()
+else:
+  answer = input(f"Create '{output_file}'? (y/n): ")
+  if answer.lower() not in confirmation:
+    close_program()
+
+# Write the results to the output file
+try:
+  output_file_handle = open(output_file, 'w')
+  
+  # Write the header row to the file
+  output_file_handle.write("id;product_name;warehouse_location;discrepancy\\n")
+  
+  # Process each result and write to the file
+  for result in results:
+    output_file_handle.write(f"{result['id']};{result['name']};{result['location']};{result['discrepancy']}\\n")
+  
+  # Close the output file
+  output_file_handle.close()
+  
+  print()
+  print(f"✓ '{output_file}' created successfully!")
+  print(f"✓ {len(results)} products analyzed and saved.")
+  
+except Exception as error:
+  print(f"✗ Cannot create '{output_file}': {error}")
+  close_program()
+
+close_program()
+` },
+    { title: "YouTube Premium Subscription Analyzer", code: `"""YouTube Premium Subscription Analyzer
+
+Matches user information with subscription fee data and identifies users with
+overpayments. Generates a report of discrepancies for accounting purposes.
+"""
+
+import os
+from decimal import Decimal
+from datetime import datetime
+
+# Set working directory to script location
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+# Note: CSV parsing is done manually because Python's csv module treats field
+# separators inconsistently when user data contains delimiters. All input files
+# MUST use semicolon as the field separator.
+
+# File Format Reference:
+# subscriptions.csv
+#   user_id;subscription_fee
+# users.csv
+#   user_id;username;address;postcode;city;email
+# output.csv
+#   user_id;username;city;fee_difference
+
+print("=" * 50)
+print("YouTube Premium Subscription Analyzer")
+print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+print("=" * 50)
+
+# File Configuration
+USER_FILE = "users.csv"
+SUBSCRIPTION_FILE = "subscriptions.csv"
+OUTPUT_FILE = "output.csv"
+MATCHING_COLUMN = "user_id"
+CONFIRM_RESPONSES = ["y", "yes"]
+
+def display_array(data_array):
+    """Display all elements from a 2D array.
+    
+    Args:
+        data_array: A 2D list to display
+    """
+    for row in data_array:
+        for element in row:
+            print(element)
+
+def index_of(array, value):
+    """Find index of value in array, returns -1 if not found.
+    
+    Args:
+        array: List to search in
+        value: Value to find
+        
+    Returns:
+        Index of value or -1 if not found
+    """
+    try:
+        return array.index(value)
+    except ValueError:
+        return -1
+
+def exit_program():
+    """Gracefully exit the program after user confirmation."""
+    print("\\nProgram terminated.")
+    input("Press Enter to exit...")
+    quit()
+  
+
+# Verify source files exist
+if not os.path.isfile(USER_FILE):
+    print(f"ERROR: Required file not found: {USER_FILE}")
+    exit_program()
+if not os.path.isfile(SUBSCRIPTION_FILE):
+    print(f"ERROR: Required file not found: {SUBSCRIPTION_FILE}")
+    exit_program()
+
+# Load user data from file
+user_headers = []
+user_data = []
+with open(USER_FILE, 'r', encoding='utf-8') as file:
+    lines = file.readlines()
+
+for line_index, line in enumerate(lines):
+    line = line.strip()
+    if not line:
+        continue
+    fields = [field.strip() for field in line.split(";")]
+    if line_index == 0:
+        user_headers = fields
+    else:
+        user_data.append(fields)
+
+
+# Check if output file already exists
+if os.path.isfile(OUTPUT_FILE):
+    response = input(f"\\nFile '{OUTPUT_FILE}' already exists. Overwrite? (y/n): ")
+    if response.lower() not in CONFIRM_RESPONSES:
+        exit_program()
+else:
+    response = input(f"\\nCreate new file '{OUTPUT_FILE}'? (y/n): ")
+    if response.lower() not in CONFIRM_RESPONSES:
+        exit_program()
+
+# Load subscription fee data from file
+subscription_headers = []
+subscription_data = []
+with open(SUBSCRIPTION_FILE, 'r', encoding='utf-8') as file:
+    lines = file.readlines()
+
+for line_index, line in enumerate(lines):
+    line = line.strip()
+    if not line:
+        continue
+    fields = [field.strip() for field in line.split(";")]
+    if line_index == 0:
+        subscription_headers = fields
+    else:
+        subscription_data.append(fields)
+
+# Find the subscription fee column
+fee_col_index = index_of(subscription_headers, "subscription_fee")
+if fee_col_index == -1:
+    print(f"ERROR: Column 'subscription_fee' not found in {SUBSCRIPTION_FILE}")
+    exit_program()
+
+# Calculate minimum subscription fee across all users
+min_fee = None
+for subscription in subscription_data:
+    try:
+        fee_amount = Decimal(subscription[fee_col_index])
+    except (ValueError, IndexError):
+        continue
+    if min_fee is None or fee_amount < min_fee:
+        min_fee = fee_amount
+
+if min_fee is None:
+    min_fee = Decimal('0')
+
+# Create output file structure and headers
+output_headers = ["user_id", "username", "city", "fee_difference"]
+output_rows = [output_headers]
+
+# Find users with subscription fees above minimum threshold
+# subscription_data format: user_id;subscription_fee
+# fee_col_index points to the fee column
+for subscription in subscription_data:
+    try:
+        current_fee = Decimal(subscription[fee_col_index])
+    except (ValueError, IndexError):
+        continue
+    
+    # Check if subscription fee exceeds minimum (anomaly detection)
+    if current_fee > min_fee:
+        # Match user ID to retrieve full user information
+        # user_data format: user_id;username;address;postcode;city;email
+        for user in user_data:
+            if user[0] == subscription[0]:  # Match by user_id
+                fee_difference = current_fee - min_fee
+                output_row = [
+                    user[0],              # user_id
+                    user[1],              # username
+                    user[4],              # city
+                    str(fee_difference)   # fee_difference
+                ]
+                output_rows.append(output_row)
+
+# Write output to CSV file
+with open(OUTPUT_FILE, "w", encoding='utf-8') as file:
+    for row in output_rows:
+        file.write(";".join(row) + "\\n")
+
+print(f"\\nSuccess! Report written to '{OUTPUT_FILE}'")
+print(f"Total anomalies detected: {len(output_rows) - 1}")
+
+exit_program()
+` },
     { title: "Script 5", code: `print("hello script5")` },
     { title: "Script 6", code: `print("hello script6")` },
   ];
