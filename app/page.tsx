@@ -1,23 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
   const blocks = [
-    { title: "Script 1", hint: "Paste your script here…" },
-    { title: "Script 2", hint: "Paste your script here…" },
-    { title: "Script 3", hint: "Paste your script here…" },
-    { title: "Script 4", hint: "Paste your script here…" },
-    { title: "Script 5", hint: "Paste your script here…" },
-    { title: "Script 6", hint: "Paste your script here…" },
+    { title: "Script 1", code: `print("hello script1")` },
+    { title: "Script 2", code: `print("hello script2")` },
+    { title: "Script 3", code: `print("hello script3")` },
+    { title: "Script 4", code: `print("hello script4")` },
+    { title: "Script 5", code: `print("hello script5")` },
+    { title: "Script 6", code: `print("hello script6")` },
   ];
-
-  // Placeholder scripts (replace later with your real scripts)
-  const codeBlocks = Array.from(
-    { length: 6 },
-    () => `print("Hello world")`
-  );
 
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
@@ -27,6 +20,7 @@ export default function Home() {
       setCopiedIndex(index);
       window.setTimeout(() => setCopiedIndex(null), 1200);
     } catch {
+      // Fallback
       try {
         const ta = document.createElement("textarea");
         ta.value = text;
@@ -49,32 +43,8 @@ export default function Home() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="min-h-screen w-full max-w-3xl bg-white px-6 py-20 dark:bg-black sm:px-12 sm:py-28">
-        {/* Header */}
-        <div className="flex items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <Image
-              className="dark:invert"
-              src="/next.svg"
-              alt="Next.js logo"
-              width={90}
-              height={18}
-              priority
-            />
-            <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-              PyScriptVault
-            </span>
-          </div>
-
-          <a
-            href="https://pyscriptvault.tech"
-            className="text-sm font-medium text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-zinc-50"
-          >
-            pyscriptvault.tech
-          </a>
-        </div>
-
-        {/* Intro */}
-        <div className="mt-10 flex flex-col gap-4">
+        {/* Clean header */}
+        <header className="flex flex-col gap-4">
           <h1 className="text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
             Python Scripts Vault
           </h1>
@@ -83,34 +53,39 @@ export default function Home() {
             A curated collection of <strong>practical Python scripts</strong> you can copy,
             study, and reuse in real projects.
           </p>
-        </div>
+        </header>
 
-        {/* Codeblocks */}
-        <div className="mt-12 flex flex-col gap-8">
+        {/* Scripts */}
+        <div className="mt-12 flex flex-col gap-10">
           {blocks.map((b, i) => (
             <section key={i} className="flex flex-col gap-3">
-              <div className="flex items-center justify-between gap-3">
-                <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">
-                  {b.title}
-                </h2>
+              <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">
+                {b.title}
+              </h2>
 
+              {/* Code block wrapper (for overlay button) */}
+              <div className="relative">
                 <button
                   type="button"
-                  onClick={() => copyToClipboard(codeBlocks[i], i)}
-                  className="inline-flex h-9 items-center justify-center rounded-full border border-solid border-black/[.08] px-4 text-sm font-medium text-zinc-900 transition hover:bg-black/[.04] dark:border-white/[.145] dark:text-zinc-100 dark:hover:bg-[#1a1a1a]"
+                  onClick={() => copyToClipboard(b.code, i)}
+                  className={[
+                    "absolute right-3 top-3 z-10",
+                    "inline-flex h-8 items-center justify-center rounded-full px-3 text-xs font-semibold",
+                    "bg-white/10 text-zinc-100 backdrop-blur",
+                    "border border-white/15",
+                    "hover:bg-white/15 active:scale-[0.98]",
+                    "transition",
+                  ].join(" ")}
                   aria-label={`Copy ${b.title}`}
                   title="Copy to clipboard"
                 >
                   {copiedIndex === i ? "Copied!" : "Copy"}
                 </button>
+
+                <pre className="overflow-x-auto rounded-xl border border-black/10 bg-black p-5 pr-20 text-sm leading-6 text-zinc-100 dark:border-white/10 font-mono">
+                  <code>{b.code}</code>
+                </pre>
               </div>
-
-              {/* Black code block */}
-              <pre className="overflow-x-auto rounded-xl border border-black/10 bg-black p-4 text-sm leading-6 text-zinc-100 dark:border-white/10">
-                <code>{codeBlocks[i]}</code>
-              </pre>
-
-              <p className="text-sm text-zinc-500 dark:text-zinc-400">{b.hint}</p>
             </section>
           ))}
         </div>
@@ -118,7 +93,7 @@ export default function Home() {
         {/* Footer */}
         <div className="mt-16 border-t border-black/[.08] pt-8 dark:border-white/[.145]">
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            Tip: Keep scripts small, focused, and copy-paste friendly.
+            Keep scripts short, focused, and copy-paste friendly.
           </p>
         </div>
       </main>
