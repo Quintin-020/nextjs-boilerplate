@@ -39,6 +39,7 @@ def process_all_deliveries():
 
     # iterate over all files in the deliveries directory
     for filename in os.listdir(deliveries_dir):
+
         # gets the full path for that file
         fpath = os.path.join(deliveries_dir, filename)
         # checks whether fpath is a file
@@ -75,8 +76,8 @@ def process_all_deliveries():
                 # store in delivery_data the delivery_code + value data
                 delivery_data[delivery_code] = delivery_value
                 # print delivery_code, delivered/max, total value, average value
-                print(f"Delivery: {delivery_code}, Delivered/max: {delivered_count}/{max_items}, 
-                Value: €{delivery_value:.2f}, Avg. Value: €{avg_value:.2f}")
+                print(f"Delivery: {delivery_code}, Delivered/max: {delivered_count}/
+                {max_items}, Value: €{delivery_value:.2f}, Avg. Value: €{avg_value:.2f}")
 
                 # calculate total value all deliveries this date
                 total_value += delivery_value
