@@ -3,12 +3,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --code-bg: #000000; /* codeblock achtergrond (light mode) */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --code-bg: #000000; /* codeblock achtergrond (dark mode) */
   }
 }
 
@@ -18,19 +20,24 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Shiki: force pure black code blocks in both modes */
-pre.shiki {
-  background: #000000 !important;
-  color: #f9fafb !important;
+/* Code background: gebruik 1 variabele voor wrapper en Shiki layers */
+.code-block-wrapper {
+  background: var(--code-bg);
   border-radius: 12px;
-  padding: 20px 80px 20px 20px; /* match jouw layout */
+  overflow: hidden; /* voorkomt zichtbare gaps bij border-radius */
 }
 
+/* Shiki: forceer alle lagen naar dezelfde achtergrond */
 pre.shiki,
 pre.shiki code,
 pre.shiki span {
-  background-color: #000000 !important;
+  background: var(--code-bg) !important;
+  color: #f9fafb !important;
 }
 
-
-
+/* Optioneel: padding op pre zelf, wrapper hoeft geen padding te dupliceren */
+pre.shiki {
+  border-radius: 0; /* wrapper heeft al radius; pre vult wrapper */
+  padding: 20px 80px 20px 20px; /* jouw gewenste inner padding */
+  margin: 0; /* voorkom extra witruimte */
+}
