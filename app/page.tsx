@@ -21,7 +21,7 @@ def find_missing_deliveries():
     # creates an array with missing deliveries
     missing_deliveries = []
     for delivery in delivery_codes:
-        #  check whether the delivery code appears in delivery_data (if it does not, add it)
+        #  check whether the delivery code appears in delivery_data 
         if delivery[0] not in delivery_data:
             missing_deliveries.append(delivery[0])
 
@@ -39,7 +39,8 @@ def process_all_deliveries():
 
     # iterate over all files in the deliveries directory
     for filename in os.listdir(deliveries_dir):
-        fpath = os.path.join(deliveries_dir, filename) # gets the full path for that file
+        # gets the full path for that file
+        fpath = os.path.join(deliveries_dir, filename)
         # checks whether fpath is a file
         if os.path.isfile(fpath):
             # Filename format: DELIVERYCODE_DATE_MAXITEMS.csv
@@ -74,7 +75,8 @@ def process_all_deliveries():
                 # store in delivery_data the delivery_code + value data
                 delivery_data[delivery_code] = delivery_value
                 # print delivery_code, delivered/max, total value, average value
-                print(f"Delivery: {delivery_code}, Delivered/max: {delivered_count}/{max_items}, Value: €{delivery_value:.2f}, Avg. Value: €{avg_value:.2f}")
+                print(f"Delivery: {delivery_code}, Delivered/max: {delivered_count}/{max_items}, 
+                Value: €{delivery_value:.2f}, Avg. Value: €{avg_value:.2f}")
 
                 # calculate total value all deliveries this date
                 total_value += delivery_value
@@ -98,8 +100,11 @@ now = datetime.datetime.now()
 print("Current date and time:")
 print(now.strftime("%H:%M %d-%m-%Y"))
 
-deliveries_dir = os.path.join(script_dir, "Deliveries") # adjust path to folder with the csv delivery files
-target_date = input("Enter the delivery date in format DDMMYYYY: ") # ask user for a date in format DDMMYYYY
+# adjust path to folder with the csv delivery files
+deliveries_dir = os.path.join(script_dir, "Deliveries") 
+
+# ask user for a date in format DDMMYYYY
+target_date = input("Enter the delivery date in format DDMMYYYY: ") 
 print("Target date:", target_date)
 
 process_all_deliveries()
@@ -268,7 +273,8 @@ try:
   
   # Process each result and write to the file
   for result in results:
-    output_file_handle.write(f"{result['id']};{result['name']};{result['location']};{result['discrepancy']}\\n")
+    output_file_handle.write(f"{result['id']};{result['name']};
+    {result['location']};{result['discrepancy']}\\n")
   
   # Close the output file
   output_file_handle.close()
