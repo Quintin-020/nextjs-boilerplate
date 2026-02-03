@@ -646,8 +646,7 @@ print(f"Total anomalies detected: {len(output_rows) - 1}")
 
 exit_program()
 ` },
-    { title: "Script 5", code: `print("hello script5")` },
-    { title: "Script 6", code: `print("hello script6")` },
+    
   ];
 
   const highlighted = await Promise.all(
