@@ -1,8 +1,11 @@
 import { codeToHtml } from "shiki";
+import python from "shiki/langs/python.mjs";
+import theme from "./shiki-theme.json";
 
-export async function highlight(code: string, lang = "python") {
+export async function highlight(code: string) {
   return await codeToHtml(code, {
-    lang,
-    theme: "vitesse-dark",
+    lang: python,
+    theme,
   });
 }
+
