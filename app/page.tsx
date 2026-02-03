@@ -151,7 +151,25 @@ def main():
 if __name__ == "__main__":
     main()
 ` },
-    { title: "Delivery Tracker", code: `import os
+    { title: "Delivery Tracker", code: ` """
+Delivery Tracker
+
+What this script does:
+- Reads delivery codes from DeliveryCodes_v2.csv
+- Scans all CSV files in the Deliveries folder
+- Filters deliveries by a user-entered date (DDMMYYYY)
+- Calculates per-delivery totals and averages
+- Writes missing delivery codes to Missing_Deliveries_<date>.csv
+
+Files:
+- DeliveryCodes_v2.csv
+- Deliveries/*.csv
+- Missing_Deliveries_<date>.csv
+
+Separator: ,
+"""
+
+import os
 
 # reads data from a file and stores it in an array
 def read_delivery_file(filename):
@@ -260,23 +278,27 @@ find_missing_deliveries()
 input("press any key to close the application")
 exit()
 ")` },
-    { title: "Inventory Discrepancy Tracker", code: `import os
+    { title: "Inventory Discrepancy Tracker", code: `"""
+Inventory Discrepancy Tracker
+
+What this script does:
+- Reads product and inventory data from CSV files
+- Calculates expected and received inventory values per product
+- Computes the discrepancy (received_value - expected_value)
+- Writes the results to output.csv
+
+Files:
+- products.csv
+- inventory.csv
+- output.csv
+
+Separator: ;
+"""
+
+import os
 from decimal import Decimal
 from datetime import datetime
 import datetime
-
-# Input files must have a semicolon as field separator!
-
-# CSV file: products.csv
-# Columns: id;product_name;warehouse_location
-
-# CSV file: inventory.csv
-# Columns: id;expected_quantity;received_quantity;unit_cost
-
-# Output file: output.csv
-# Columns: id;product_name;warehouse_location;discrepancy
-
-#########################################################
 
 # Program introduction
 print("Inventory Discrepancy Tracker")
@@ -436,10 +458,21 @@ except Exception as error:
 
 close_program()
 ` },
-    { title: "YouTube Premium Subscription Analyzer", code: `"""YouTube Premium Subscription Analyzer
+    { title: "YouTube Premium Subscription Analyzer", code: `"""
+YouTube Premium Subscription Analyzer
 
-Matches user information with subscription fee data and identifies users with
-overpayments. Generates a report of discrepancies for accounting purposes.
+What this script does:
+- Reads users and subscriptions from CSV files
+- Finds the minimum subscription fee across all users
+- Identifies users paying above the minimum fee
+- Writes fee differences to output.csv
+
+Files:
+- users.csv
+- subscriptions.csv
+- output.csv
+
+Separator: ;
 """
 
 import os
