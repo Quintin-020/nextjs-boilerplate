@@ -18,8 +18,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Shiki background matches your theme */
-.shiki {
-  background: var(--background) !important;
+/* Shiki: force pure black code blocks in both modes */
+pre.shiki {
+  background: #000000 !important;
+  color: #f9fafb !important;
   border-radius: 12px;
+  padding: 20px 80px 20px 20px; /* match jouw layout */
 }

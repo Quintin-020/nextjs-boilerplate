@@ -1,14 +1,10 @@
+// CodeBlock.tsx
+
 "use client";
 
 import { useState } from "react";
 
-export default function CodeBlock({
-  html,
-  raw,
-}: {
-  html: string;
-  raw: string;
-}) {
+export default function CodeBlock({ html, raw }: { html: string; raw: string }) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
@@ -27,7 +23,7 @@ export default function CodeBlock({
       </button>
 
       <div
-        className="shiki overflow-x-auto rounded-xl border border-white/10 p-5 pr-20 text-sm leading-6 font-mono"
+        className="overflow-x-auto rounded-xl border border-black/10 dark:border-white/10"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>
