@@ -473,7 +473,7 @@ exit_program()
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[var(--background)]">
-      <main className="min-h-screen w-full max-w-3xl bg-[var(--background)] px-6 py-20 sm:px-12 sm:py-28">
+      <main className="min-h-screen w-full max-w-4xl bg-[var(--background)] px-6 py-20 sm:px-12 sm:py-28">
         <header className="flex flex-col gap-4">
           <h1 className="text-4xl md:text-5xl font-semibold text-black dark:text-zinc-50">
             Python Scripts Vault
