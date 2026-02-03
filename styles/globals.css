@@ -27,13 +27,19 @@ body {
   overflow: hidden; /* voorkomt zichtbare gaps bij border-radius */
 }
 
-/* Shiki: forceer alle lagen naar dezelfde achtergrond */
+/* Shiki: forceer alleen achtergrond, laat token kleuren over aan Shiki */
 pre.shiki,
 pre.shiki code,
 pre.shiki span {
   background: var(--code-bg) !important;
-  color: #f9fafb !important;
+  /* verwijder color override zodat Shiki token kleuren zichtbaar blijven */
 }
+
+
+pre.shiki {
+  color: #f9fafb; /* fallback, zonder !important */
+}
+
 
 /* Optioneel: padding op pre zelf, wrapper hoeft geen padding te dupliceren */
 pre.shiki {
