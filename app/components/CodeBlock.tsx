@@ -24,6 +24,7 @@ export default function CodeBlock({ html, raw }: { html: string; raw: string }) 
 
       <div
         className="overflow-x-auto rounded-xl border border-black/10 dark:border-white/10"
+        style={{ background: "transparent" }}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>

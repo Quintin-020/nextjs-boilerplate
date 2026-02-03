@@ -1,3 +1,5 @@
+//page.tsx
+
 import { highlight } from "../lib/highlighter";
 import CodeBlock from "./components/CodeBlock";
 
