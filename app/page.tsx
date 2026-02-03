@@ -5,7 +5,152 @@ import CodeBlock from "./components/CodeBlock";
 
 export default async function Home() {
   const blocks = [
-    { title: "Script 1", code: `print("hello script1")` },
+    { title: "Game Match Analyzer", code: `"""
+Gaming Match Stats
+
+What this script does:
+- Reads players.csv and matches.csv (semicolon separated)
+- Aggregates simple stats per player:
+  matches, wins, winrate, kills, deaths, K/D ratio
+- Writes the result to output.csv
+
+Files:
+- players.csv
+- matches.csv
+- output.csv
+
+Separator: ;
+"""
+
+import os
+
+
+PLAYERS_FILE = "players.csv"
+MATCHES_FILE = "matches.csv"
+OUTPUT_FILE = "output.csv"
+
+
+def read_csv(path):
+    """
+    Read a semicolon-separated CSV manually.
+    Returns: (header_list, rows_list)
+    """
+    with open(path, "r", encoding="utf-8") as f:
+        lines = [l.strip() for l in f if l.strip()]
+
+    header = [h.strip() for h in lines[0].split(";")]
+    rows = [[x.strip() for x in l.split(";")] for l in lines[1:]]
+    return header, rows
+
+
+def to_int(value):
+    """
+    Convert a string to int safely.
+    Non-numeric values become 0.
+    """
+    value = (value or "").strip()
+    return int(value) if value.isdigit() else 0
+
+
+def main():
+    print("Gaming Match Stats\\n")
+
+    # Work in the same folder as the script,
+    # so the CSV files are found reliably.
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+    # Basic file checks
+    if not os.path.isfile(PLAYERS_FILE):
+        print("players.csv not found")
+        return
+
+    if not os.path.isfile(MATCHES_FILE):
+        print("matches.csv not found")
+        return
+
+    # Read both CSV files
+    p_header, p_rows = read_csv(PLAYERS_FILE)
+    m_header, m_rows = read_csv(MATCHES_FILE)
+
+    # Get the column indexes we need
+    p_id = p_header.index("player_id")
+    p_name = p_header.index("name")
+
+    m_pid = m_header.index("player_id")
+    m_kills = m_header.index("kills")
+    m_deaths = m_header.index("deaths")
+    m_win = m_header.index("win")  # expected values: 1 or 0
+
+    # Build a stats dict per player
+    # Key: player_id
+    stats = {}
+
+    for p in p_rows:
+        pid = p[p_id]
+        stats[pid] = {
+            "name": p[p_name],
+            "matches": 0,
+            "wins": 0,
+            "kills": 0,
+            "deaths": 0,
+        }
+
+    # Aggregate match rows
+    for m in m_rows:
+        pid = m[m_pid]
+
+        # Ignore match rows for unknown player IDs
+        if pid not in stats:
+            continue
+
+        stats[pid]["matches"] += 1
+        stats[pid]["wins"] += to_int(m[m_win])
+        stats[pid]["kills"] += to_int(m[m_kills])
+        stats[pid]["deaths"] += to_int(m[m_deaths])
+
+    # Write the output report
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        f.write(
+            "player_id;name;matches;"
+            "wins;winrate;kills;deaths;kdr\\n"
+        )
+
+        for pid, s in stats.items():
+            matches = s["matches"]
+            wins = s["wins"]
+            kills = s["kills"]
+            deaths = s["deaths"]
+
+            # Calculate winrate in %
+            if matches > 0:
+                winrate = round((wins / matches) * 100, 1)
+            else:
+                winrate = 0.0
+
+            # Calculate K/D ratio
+            # If deaths = 0, treat K/D as kills (avoid division by zero)
+            if deaths > 0:
+                kdr = round(kills / deaths, 2)
+            else:
+                kdr = float(kills)
+
+            f.write(
+                f"{pid};"
+                f"{s['name']};"
+                f"{matches};"
+                f"{wins};"
+                f"{winrate};"
+                f"{kills};"
+                f"{deaths};"
+                f"{kdr}\\n"
+            )
+
+    print("output.csv created")
+
+
+if __name__ == "__main__":
+    main()
+` },
     { title: "Delivery Tracker", code: `import os
 
 # reads data from a file and stores it in an array
