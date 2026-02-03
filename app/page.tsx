@@ -12,8 +12,12 @@ export default function Home() {
     { title: "Script 5", hint: "Paste your script here…" },
     { title: "Script 6", hint: "Paste your script here…" },
   ];
-  
-  const codeBlocks = Array.from({ length: 6 }, () => "");
+
+  // Placeholder scripts (replace later with your real scripts)
+  const codeBlocks = Array.from(
+    { length: 6 },
+    () => `print("Hello world")`
+  );
 
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
@@ -23,7 +27,6 @@ export default function Home() {
       setCopiedIndex(index);
       window.setTimeout(() => setCopiedIndex(null), 1200);
     } catch {
-      // Fallback for older browsers / restricted contexts
       try {
         const ta = document.createElement("textarea");
         ta.value = text;
@@ -94,25 +97,17 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => copyToClipboard(codeBlocks[i], i)}
-                  disabled={!codeBlocks[i]}
-                  className={[
-                    "inline-flex h-9 items-center justify-center rounded-full px-4 text-sm font-medium transition",
-                    "border border-solid border-black/[.08] dark:border-white/[.145]",
-                    "text-zinc-900 dark:text-zinc-100",
-                    "hover:bg-black/[.04] dark:hover:bg-[#1a1a1a]",
-                    !codeBlocks[i]
-                      ? "cursor-not-allowed opacity-50"
-                      : "cursor-pointer",
-                  ].join(" ")}
+                  className="inline-flex h-9 items-center justify-center rounded-full border border-solid border-black/[.08] px-4 text-sm font-medium text-zinc-900 transition hover:bg-black/[.04] dark:border-white/[.145] dark:text-zinc-100 dark:hover:bg-[#1a1a1a]"
                   aria-label={`Copy ${b.title}`}
-                  title={codeBlocks[i] ? "Copy to clipboard" : "Paste a script first"}
+                  title="Copy to clipboard"
                 >
                   {copiedIndex === i ? "Copied!" : "Copy"}
                 </button>
               </div>
 
-              <pre className="overflow-x-auto rounded-xl border border-black/[.08] bg-zinc-50 p-4 text-sm leading-6 text-zinc-900 dark:border-white/[.145] dark:bg-[#0b0b0b] dark:text-zinc-100">
-                <code>{codeBlocks[i] || ""}</code>
+              {/* Black code block */}
+              <pre className="overflow-x-auto rounded-xl border border-black/10 bg-black p-4 text-sm leading-6 text-zinc-100 dark:border-white/10">
+                <code>{codeBlocks[i]}</code>
               </pre>
 
               <p className="text-sm text-zinc-500 dark:text-zinc-400">{b.hint}</p>
