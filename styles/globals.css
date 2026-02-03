@@ -30,3 +30,14 @@ body {
   border-radius: 12px;
 }
 
+
+/* Force Shiki background to match your light theme */
+html.light .shiki {
+  background: #ffffff !important;
+}
+
+/* Dark mode override */
+html.dark .shiki {
+  background: #000000 !important;
+}
+
